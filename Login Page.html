@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="Login-page-StyleSheets.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <title>Login Page</title>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <h1>Login</h1>
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Enter your Email" />
+            <i class="bx bx-user"></i>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Enter your Password" />
+            <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="remember-forgot">
+            <label><input type="checkbox" /> Remember Me</label>
+            <a href="#">Forget Password</a>
+        </div>
+        <button class="login-button" id="login-button">Login</button>
+        <p class="register-text">
+            Don't have an Account? <a href="Register.html">Register</a>
+        </p>
+    </div>
+    <script>
+const tempEmail = "mayankk0523@gmail.com";
+const tempPassword = "123456789";
+
+document.getElementById("login-button").addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email === tempEmail && password === tempPassword) {
+
+        // ✅ Save login status
+        localStorage.setItem("isLoggedIn", "true");
+
+        alert("Login Successful! Redirecting...");
+
+        // ✅ Redirect (same tab)
+        window.location.href = "Homepage/ptomhomepage.html";
+
+    } else {
+        alert("Invalid Email or Password ❌");
+    }
+});
+</script>
+    <script src="JavaScript.js"></script>
+</body>
+</html>

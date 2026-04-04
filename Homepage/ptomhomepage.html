@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PTOM Student Portal</title>
+    <link rel="stylesheet" href="Home-Page-StyleSheets.css" />
+    <script src="homepage.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<!-- 🔥 Chatbot -->
+<div id="chatbot">
+  <div id="chat-toggle" onclick="toggleChat()">💬</div>
+
+  <div id="chat-header">
+  <span>🤖 AI Assistant</span>
+  <button onclick="toggleChat()" style="background:none;border:none;color:white;font-size:16px;">✖</button>
+</div>
+
+    <div id="chat-messages"></div>
+
+    <input id="chat-input" type="text" placeholder="Type message..."
+           onkeypress="handleChat(event)">
+  </div>
+</div>
+<script>
+if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "../Login Page.html";
+}
+</script>
+<body>
+    <header class="pageheader">
+        <div class="user-profile">
+            <img src="useravatar.gif" alt="User Avatar" />
+            <div class="welcome-text">
+                <p>Welcome</p>
+                <strong>Mayank Soni</strong>
+            </div>
+        </div>
+        <div class="notification-bell">
+            <i class='bx bx-bell'></i>
+            <span class="notification-count">FYI ➤ 82</span>
+        </div>
+    </header>
+
+    <main class="homecontainer">
+        
+        <a href="../Digital Learning/DigitalLearning.html" class="tile digitallearning">
+            <img src="icons digital-learning.png" alt="Digital Learning" />
+            <h3>Digital Library</h3>
+        </a>
+
+        <a href="../NoteBook/NoteBook.html" class="tile Digital NoteBook">
+            <img src="../NoteBook/ChatGPT Image Jun 1, 2025, 10_37_56 PM.png" alt="DigitalNoteBook" />
+            <h3>Digital NoteBook</h3>
+        </a>
+
+        <a href="#" class="tile helpdesk">
+            <img src="helpdesk.gif" alt="HelpDesk" />
+            <h3>HelpDesk</h3>
+        </a>
+
+        <a href="#" class="tile category">
+            <img src="category.png" alt="Category" />
+            <h3>Category</h3>
+        </a>
+        <a href="#" class="tile complaint">
+            <img src="complaint.png" alt="Complaints" />
+            <h3>Complaints</h3>
+        </a>
+
+        
+    </main>
+
+    <footer class="footer">
+        <p>PTOM™</p>
+</footer>
+<script src="homepage.js"></script>
+</body>
+</html>
