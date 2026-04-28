@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PTOM Student Portal</title>
+    <link rel="stylesheet" href="Home-Page-StyleSheets.css" />
+    <script src="homepage.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+    /* FAB BUTTON */
+    .chat-fab {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 1000;
+      width: 58px;
+      height: 58px;
+      background: var(--accent);
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 24px rgba(44,95,46,0.40);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.25s ease,
+                  background 0.2s;
+      animation: fabIn 0.5s 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+ 
+    @keyframes fabIn {
+      from { opacity: 0; transform: scale(0.4) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+ 
+    .chat-fab:hover {
+      background: var(--accent-hover);
+      transform: scale(1.08);
+      box-shadow: 0 10px 32px rgba(44,95,46,0.45);
+    }
+ 
+    .chat-fab:active { transform: scale(0.96); }
+ 
+    .fab-icon, .fab-close {
+      position: absolute;
+      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+ 
+    .fab-icon svg, .fab-close svg {
+      width: 24px; height: 24px;
+      stroke: #fff; fill: none;
+      stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+    }
+ 
+    .fab-close { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+ 
+    .chat-fab.open .fab-icon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+    .chat-fab.open .fab-close { opacity: 1; transform: rotate(0deg) scale(1); }
+ 
+    /* UNREAD BADGE */
+    .fab-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 18px;
+      height: 18px;
+      background: #e05c3a;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      font-size: 0.6rem;
+      color: #fff;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+ 
+    @keyframes badgePop {
+      from { transform: scale(0); }
+      to   { transform: scale(1); }
+    }
+ 
+    /* CHAT PANEL */
+    .chat-panel {
+      position: fixed;
+      bottom: 100px;
+      right: 28px;
+      z-index: 999;
+      width: 380px;
+      max-width: calc(100vw - 40px);
+      height: 560px;
+      max-height: calc(100vh - 130px);
+      background: var(--surface);
+      border-radius: 22px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform-origin: bottom right;
+      transform: scale(0.85) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                  opacity 0.25s ease;
+    }
+ 
+    .chat-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+ 
+    /* PANEL HEADER */
+    .panel-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+ 
+    .panel-avatar {
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+ 
+    .panel-info { flex: 1; min-width: 0; }
+ 
+    .panel-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 0.98rem;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+ 
+    .panel-status {
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+ 
+    .status-dot {
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+ 
+    @keyframes pulse {
+      0%,100% { opacity:1; } 50% { opacity:0.3; }
+    }
+ 
+    .panel-actions { display: flex; gap: 6px; }
+ 
+    .panel-btn {
+      width: 30px; height: 30px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+ 
+    .panel-btn:hover { background: var(--border); }
+    .panel-btn svg { width: 14px; height: 14px; stroke: var(--text-secondary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+ 
+    /* QUICK CHIPS */
+    .chips-bar {
+      padding: 10px 14px 0;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+ 
+    .chips-bar::-webkit-scrollbar { display: none; }
+ 
+    .chip {
+      font-size: 0.72rem;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s;
+      flex-shrink: 0;
+    }
+ 
+    .chip:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+ 
+    /* MESSAGES */
+    .panel-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 14px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+ 
+    .panel-messages::-webkit-scrollbar { width: 3px; }
+    .panel-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+ 
+    /* WELCOME CARD */
+    .welcome-card {
+      background: var(--accent-light);
+      border: 1px solid rgba(44,95,46,0.15);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      animation: msgIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+ 
+    .welcome-card .wc-emoji { font-size: 2rem; margin-bottom: 8px; }
+ 
+    .welcome-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+ 
+    .welcome-card p {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+ 
+    /* MESSAGE ROWS */
+    .msg-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      animation: msgIn 0.35s cubic-bezier(0.22,1,0.36,1) both;
+    }
+ 
+    @keyframes msgIn {
+      from { opacity:0; transform:translateY(10px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+ 
+    .msg-row.user { flex-direction: row-reverse; }
+ 
+    .msg-avatar {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+ 
+    .msg-avatar.bot { background: var(--accent); color: #fff; font-size: 0.9rem; }
+    .msg-avatar.user { background: var(--user-bubble); color: var(--user-text); font-size: 0.6rem; }
+ 
+    .msg-body { max-width: 78%; display: flex; flex-direction: column; gap: 3px; }
+    .msg-row.user .msg-body { align-items: flex-end; }
+ 
+    .bubble {
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+ 
+    .bubble.bot {
+      background: var(--bg);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 5px;
+    }
+ 
+    .bubble.user {
+      background: var(--user-bubble);
+      color: var(--user-text);
+      border-bottom-right-radius: 5px;
+    }
+ 
+    .msg-time {
+      font-size: 0.63rem;
+      color: var(--text-secondary);
+      padding: 0 3px;
+    }
+ 
+    /* TYPING */
+    .typing-row {
+      display: flex; gap: 8px; align-items: flex-end;
+      animation: msgIn 0.3s ease both;
+    }
+ 
+    .typing-bubble {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      border-bottom-left-radius: 5px;
+      padding: 12px 16px;
+      display: flex; gap: 5px; align-items: center;
+    }
+ 
+    .t-dot {
+      width: 6px; height: 6px;
+      background: var(--text-secondary);
+      border-radius: 50%;
+      animation: tdot 1.2s ease-in-out infinite;
+    }
+ 
+    .t-dot:nth-child(2) { animation-delay: 0.2s; }
+    .t-dot:nth-child(3) { animation-delay: 0.4s; }
+ 
+    @keyframes tdot {
+      0%,60%,100% { transform:translateY(0); opacity:0.4; }
+      30% { transform:translateY(-5px); opacity:1; }
+    }
+ 
+    /* INPUT */
+    .panel-footer {
+      padding: 10px 14px 14px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+ 
+    .input-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 7px 7px 7px 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+ 
+    .input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(44,95,46,0.09);
+    }
+ 
+    .msg-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.84rem;
+      color: var(--text-primary);
+      resize: none;
+      max-height: 90px;
+      min-height: 22px;
+      line-height: 1.5;
+      padding: 3px 0;
+    }
+ 
+    .msg-input::placeholder { color: var(--text-secondary); }
+ 
+    .send-btn {
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+ 
+    .send-btn:hover { background: var(--accent-hover); transform: scale(1.06); }
+    .send-btn:active { transform: scale(0.94); }
+    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .send-btn svg { width: 15px; height: 15px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+ 
+    .footer-note {
+      text-align: center;
+      font-size: 0.62rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+ 
+    @media (max-width: 440px) {
+      .chat-panel { right: 0; bottom: 80px; width: 100vw; max-width: 100vw; border-radius: 22px 22px 0 0; }
+      .chat-fab { right: 18px; bottom: 18px; }
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- ── DEMO PAGE CONTENT ── -->
+<nav class="demo-nav">
+  <div class="demo-logo">📚 <span>Digital</span>Library</div>
+  <ul class="demo-nav-links">
+    <li><a href="#">Books</a></li>
+    <li><a href="#">Notes</a></li>
+    <li><a href="#">Study Materials</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+</nav>
+ 
+<section class="demo-hero">
+  <h1>Your <em>knowledge</em><br/>lives here.</h1>
+  <p>A curated digital library of books, notes, and study materials — everything you need to learn, explore, and grow.</p>
+</section>
+ 
+<div class="demo-cards">
+  <div class="demo-card">
+    <div class="demo-card-icon">📗</div>
+    <h3>Books</h3>
+    <p>Thousands of titles across fiction, non-fiction, academic, and more. Read online or download.</p>
+  </div>
+  <div class="demo-card">
+    <div class="demo-card-icon">📝</div>
+    <h3>Notes</h3>
+    <p>Curated study notes from top contributors. Organised by subject, topic, and level.</p>
+  </div>
+  <div class="demo-card">
+    <div class="demo-card-icon">🎓</div>
+    <h3>Study Materials</h3>
+    <p>Past papers, guides, summaries, and flashcards to help you study smarter.</p>
+  </div>
+</div>
+ 
+ 
+<!-- ══════════════════════════════
+     FLOATING CHAT WIDGET
+══════════════════════════════ -->
+ 
+<!-- PANEL -->
+<div class="chat-panel" id="chatPanel">
+ 
+  <div class="panel-header">
+    <div class="panel-avatar">📚</div>
+    <div class="panel-info">
+      <div class="panel-name">Library Assistant</div>
+      <div class="panel-status"><div class="status-dot"></div> Always here to help</div>
+    </div>
+    <div class="panel-actions">
+      <button class="panel-btn" onclick="clearChat()" title="Clear chat">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
+      </button>
+      <button class="panel-btn" onclick="toggleChat()" title="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+ 
+  <div class="chips-bar" id="chipsBar">
+    <button class="chip" onclick="useChip(this)">📗 Find a book</button>
+    <button class="chip" onclick="useChip(this)">📝 Get notes</button>
+    <button class="chip" onclick="useChip(this)">🎓 Study materials</button>
+    <button class="chip" onclick="useChip(this)">ℹ️ About this site</button>
+    <button class="chip" onclick="useChip(this)">💡 Recommend something</button>
+  </div>
+ 
+  <div class="panel-messages" id="panelMessages">
+    <div class="welcome-card" id="welcomeCard">
+      <div class="wc-emoji">👋</div>
+      <h3>Hi there! I'm your Library Assistant.</h3>
+      <p>I can help you find <strong>books</strong>, <strong>notes</strong>, and <strong>study materials</strong>, explain how the site works, or give you personalised recommendations.</p>
+    </div>
+  </div>
+ 
+  <div class="panel-footer">
+    <div class="input-wrap">
+      <textarea
+        class="msg-input"
+        id="msgInput"
+        placeholder="Ask me anything…"
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="footer-note">Powered by Claude AI · Digital Library</div>
+  </div>
+</div>
+ 
+<!-- FAB BUTTON -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Open chat assistant">
+  <div class="fab-icon">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </div>
+  <div class="fab-close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </div>
+  <div class="fab-badge" id="fabBadge">1</div>
+</button>
+ 
+ 
+<script>
+  /* ── CONFIG ── */
+  const SYSTEM_PROMPT = `You are a friendly, knowledgeable assistant for a Digital Library website. Your job is to help users with:
+ 
+1. BOOKS — help users find books by title, author, genre, or topic. Suggest books based on interests. Describe books and authors.
+2. NOTES — help users find study notes for specific subjects, topics, or courses.
+3. STUDY MATERIALS — help users find past papers, guides, summaries, flashcards, and revision resources.
+4. SITE NAVIGATION — explain how the website works, how to search, how to download or read materials, how to create an account, and any other site-related questions.
+5. RECOMMENDATIONS — give personalised suggestions based on what the user tells you about their interests or study goals.
+ 
+Keep your replies concise, warm, and helpful. Use relevant emojis sparingly to enhance readability. Format lists neatly when recommending multiple items. If you don't have specific information about the exact inventory of this particular site, still guide the user helpfully and let them know they can use the site's search feature for exact availability.`;
+ 
+  let history = [];
+  let loading = false;
+  let isOpen = false;
+ 
+  const panel   = document.getElementById('chatPanel');
+  const fab     = document.getElementById('chatFab');
+  const badge   = document.getElementById('fabBadge');
+  const msgs    = document.getElementById('panelMessages');
+  const input   = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+ 
+  
+</script>
+<script>
+if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "../Login Page.html";
+}
+</script>
+<body>
+    <header class="pageheader">
+        <div class="user-profile">
+            <img src="useravatar.gif" alt="User Avatar" />
+            <div class="welcome-text">
+                <p>Welcome</p>
+                <strong>Mayank Soni</strong>
+            </div>
+        </div>
+        <div class="notification-bell">
+            <i class='bx bx-bell'></i>
+            <span class="notification-count">FYI ➤ 82</span>
+        </div>
+    </header>
+
+    <main class="homecontainer">
+        
+        <a href="../Digital Learning/DigitalLearning.html" class="tile digitallearning">
+            <img src="icons digital-learning.png" alt="Digital Learning" />
+            <h3>Digital Library</h3>
+        </a>
+
+        <a href="../NoteBook/NoteBook.html" class="tile Digital NoteBook">
+            <img src="../NoteBook/ChatGPT Image Jun 1, 2025, 10_37_56 PM.png" alt="DigitalNoteBook" />
+            <h3>Digital NoteBook</h3>
+        </a>
+
+        <a href="#" class="tile helpdesk">
+            <img src="helpdesk.gif" alt="HelpDesk" />
+            <h3>HelpDesk</h3>
+        </a>
+
+        <a href="#" class="tile category">
+            <img src="category.png" alt="Category" />
+            <h3>Category</h3>
+        </a>
+        <a href="#" class="tile complaint">
+            <img src="complaint.png" alt="Complaints" />
+            <h3>Complaints</h3>
+        </a>
+
+        
+    </main>
+
+    <footer class="footer">
+        <p>PTOM™</p>
+</footer>
+<script src="homepage.js"></script>
+</body>
+</html>
