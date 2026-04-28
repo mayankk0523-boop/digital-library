@@ -1,0 +1,255 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.notebook {
+    width: 210mm;
+    height: 297mm;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px 40px 40px 80px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.notebook::before,
+.notebook::after {
+    content: "";
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    width: 2px;
+    background-color: #e75480;
+}
+
+.notebook::before {
+    left: 50px;
+}
+
+.notebook::after {
+    left: 60px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #333;
+    font-weight: bold;
+}
+
+.date-day {
+    position: absolute;
+    top: 0;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.date-day span {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.date-day input {
+    border: none;
+    border-bottom: 1px dashed #333;
+    font-size: 1rem;
+    width: 120px;
+    text-align: center;
+    background: transparent;
+    cursor: pointer;
+}
+
+.page-number {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.content {
+    height: calc(297mm - 200px);
+    outline: none;
+    position: relative;
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 25px,
+            #000 26px
+        );
+    background-size: 100% 26px;
+    background-repeat: repeat-y;
+    padding-left: 15px;
+    line-height: 26px;
+    overflow-y: auto;
+    margin-top: 20px;
+    white-space: pre-wrap;
+    font-size: 1rem;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.footer button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.footer button:hover {
+    background-color: #45a049;
+}
+
+#save-page {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2196F3;
+    color: white;
+    padding: 8px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+    transition: background-color 0.3s;
+}
+
+#save-page:hover {
+    background-color: #1976D2;
+}
+
+.title-input {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    background: transparent;
+    outline: none;
+}
+
+.floating-ball {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.ball-main {
+    width: 60px;
+    height: 60px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.ball-main:hover {
+    transform: scale(1.1);
+    background-color: #45a049;
+}
+
+.ball-options {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+}
+
+.ball-options.show {
+    display: flex;
+}
+
+.ball-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.ball-option:hover {
+    background-color: #ddd;
+}
+
+select.ball-option {
+    border-radius: 5px;
+    width: auto;
+    height: auto;
+    padding: 4px;
+}
+
+.color-picker {
+    padding: 0;
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* Style bullets to be inside content area */
+.content ul, .content ol {
+    margin-left: 30px;
+    padding-left: 20px;
+}
+
+.content li {
+    line-height: 26px;
+}
