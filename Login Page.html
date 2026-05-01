@@ -3,64 +3,53 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PTOM Student Portal</title>
-    <link rel="stylesheet" href="Home-Page-StyleSheets.css" />
-    <script src="homepage.js"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>  
-</script>
-<script>
-if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.href = "../Login Page.html";
-}
-</script>
-<body>
-    <header class="pageheader">
-        <div class="user-profile">
-            <img src="useravatar.gif" alt="User Avatar" />
-            <div class="welcome-text">
-                <p>Welcome</p>
-                <strong>Mayank Soni</strong>
-            </div>
+    <link rel="stylesheet" href="Login-page-StyleSheets.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <title>Login Page</title>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <h1>Login</h1>
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Enter your Email" />
+            <i class="bx bx-user"></i>
         </div>
-        <div class="notification-bell">
-            <i class='bx bx-bell'></i>
-            <span class="notification-count">FYI ➤ 82</span>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Enter your Password" />
+            <i class="bx bxs-lock-alt"></i>
         </div>
-    </header>
+        <div class="remember-forgot">
+            <label><input type="checkbox" /> Remember Me</label>
+            <a href="#">Forget Password</a>
+        </div>
+        <button class="login-button" id="login-button">Login</button>
+        <p class="register-text">
+            Don't have an Account? <a href="Register.html">Register</a>
+        </p>
+    </div>
+    <script>
+const tempEmail = "mayankk0523@gmail.com";
+const tempPassword = "123456789";
 
-    <main class="homecontainer">
-        
-        <a href="../Digital Learning/DigitalLearning.html" class="tile digitallearning">
-            <img src="icons digital-learning.png" alt="Digital Learning" />
-            <h3>Digital Library</h3>
-        </a>
+document.getElementById("login-button").addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-        <a href="../NoteBook/NoteBook.html" class="tile Digital NoteBook">
-            <img src="../NoteBook/ChatGPT Image Jun 1, 2025, 10_37_56 PM.png" alt="DigitalNoteBook" />
-            <h3>Digital NoteBook</h3>
-        </a>
+    if (email === tempEmail && password === tempPassword) {
 
-        <a href="#" class="tile helpdesk">
-            <img src="helpdesk.gif" alt="HelpDesk" />
-            <h3>HelpDesk</h3>
-        </a>
+        // ✅ Save login status
+        localStorage.setItem("isLoggedIn", "true");
 
-        <a href="#" class="tile category">
-            <img src="category.png" alt="Category" />
-            <h3>Category</h3>
-        </a>
-        <a href="#" class="tile complaint">
-            <img src="complaint.png" alt="Complaints" />
-            <h3>Complaints</h3>
-        </a>
+        alert("Login Successful! Redirecting...");
 
-        
-    </main>
+        // ✅ Redirect (same tab)
+        window.location.href = "Homepage/ptomhomepage.html";
 
-    <footer class="footer">
-        <p>PTOM™</p>
-</footer>
-<script src="homepage.js"></script>
+    } else {
+        alert("Invalid Email or Password ❌");
+    }
+});
+</script>
+    <script src="JavaScript.js"></script>
 </body>
 </html>
